@@ -57,6 +57,7 @@ module.exports = {
             nickChange = false,
             homeController = false,
             visitingController = false
+          const thisFacility = 'ZAB'
           /*
                       if (member.permissions.has('ADMINISTRATOR')) {
                         const ownerName = interaction.guild.members.cache.get(interaction.guild.ownerId).nickname
@@ -67,37 +68,37 @@ module.exports = {
           for (let i = 0; i < user.roles.length; i++) {
             //Roles Table
             const role = user.roles[i]
-            if ((user.facility === role.facility) && (role.role === 'ATM')) {
+            if ((thisFacility === role.facility) && (role.role === 'ATM')) {
               roles.push('Air Traffic Manager')
               zabStaff = true
             }
-            if ((user.facility === role.facility) && (role.role === 'DATM')) {
+            if ((thisFacility === role.facility) && (role.role === 'DATM')) {
               roles.push('Deputy Air Traffic Manager')
               zabStaff = true
             }
-            if ((user.facility === role.facility) && (role.role === 'TA')) {
+            if ((thisFacility === role.facility) && (role.role === 'TA')) {
               roles.push('Training Administrator')
               roles.push('Training Team')
               zabStaff = true
             }
-            if ((user.facility === role.facility) && (role.role === 'EC')) {
+            if ((thisFacility === role.facility) && (role.role === 'EC')) {
               roles.push('Events Coordinator')
               roles.push('Events Team')
               zabStaff = true
             }
-            if ((user.facility === role.facility) && (role.role === 'FE')) {
+            if ((thisFacility === role.facility) && (role.role === 'FE')) {
               roles.push('Facility Engineer')
               roles.push('Facilities Team')
               roles.push('Tech Team')
               zabStaff = true
             }
-            if ((user.facility === role.facility) && (role.role === 'WM')) {
+            if ((thisFacility === role.facility) && (role.role === 'WM')) {
               roles.push('Webmaster')
               roles.push('Web Team')
               roles.push('Tech Team')
               zabStaff = true
             }
-            if ((user.facility === role.facility) && ((role.role === 'MTR') || (user.rating_short.includes('I')))) {
+            if ((thisFacility === role.facility) && (role.role === 'MTR')) {
               roles.push('Training Team')
             }
             if ((role.facility === 'ZHQ') && role.role.match(/US\d+/)) {
@@ -108,6 +109,7 @@ module.exports = {
           //Set roles based on rating for home controllers
           if (user.facility === 'ZAB') {
             homeController = true
+            roles.push('Member')
             switch (user.rating_short) {
               case 'OBS': roles.push('Observer')
                 break;
@@ -121,19 +123,13 @@ module.exports = {
                 break;
               case 'C3': roles.push('Senior Controller')
                 break;
-              case 'I1': roles.push('Instructor')
+              case 'I1': roles.push('Instructor'); roles.push('Training Team')
                 break;
-              case 'I3': roles.push('Instructor')
+              case 'I3': roles.push('Instructor'); roles.push('Training Team')
                 break;
               case 'SUP': null
             }
           }
-
-          //Set role for all home controllers
-          if (user.facility === 'ZAB') {
-            roles.push('Member')
-          }
-
 
           //Determine if visiting controller
           for (let i = 0; i < user.visiting_facilities.length; i++) {

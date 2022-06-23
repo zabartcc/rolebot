@@ -51,6 +51,8 @@ module.exports = {
             }
           let roles = [],
             facStaff = [],
+            zabStaff = false,
+            guestController = false,
             newNick = member.nickname,
             nickChange = false,
             homeController = false,
@@ -67,29 +69,33 @@ module.exports = {
             const role = user.roles[i]
             if ((user.facility === role.facility) && (role.role === 'ATM')) {
               roles.push('Air Traffic Manager')
-              roles.push('ARTCC Management')
+              zabStaff = true
             }
             if ((user.facility === role.facility) && (role.role === 'DATM')) {
               roles.push('Deputy Air Traffic Manager')
-              roles.push('ARTCC Management')
+              zabStaff = true
             }
             if ((user.facility === role.facility) && (role.role === 'TA')) {
               roles.push('Training Administrator')
               roles.push('Training Team')
+              zabStaff = true
             }
             if ((user.facility === role.facility) && (role.role === 'EC')) {
               roles.push('Events Coordinator')
               roles.push('Events Team')
+              zabStaff = true
             }
             if ((user.facility === role.facility) && (role.role === 'FE')) {
               roles.push('Facility Engineer')
               roles.push('Facilities Team')
               roles.push('Tech Team')
+              zabStaff = true
             }
             if ((user.facility === role.facility) && (role.role === 'WM')) {
               roles.push('Webmaster')
               roles.push('Web Team')
               roles.push('Tech Team')
+              zabStaff = true
             }
             if ((user.facility === role.facility) && ((role.role === 'MTR') || (user.rating_short.includes('I')))) {
               roles.push('Training Team')
@@ -122,6 +128,13 @@ module.exports = {
               case 'SUP': null
             }
           }
+
+          //Set role for all home controllers
+          if (user.facility === 'ZAB') {
+            roles.push('Member')
+          }
+
+
           //Determine if visiting controller
           for (let i = 0; i < user.visiting_facilities.length; i++) {
             //Visiting Facilities Table
@@ -141,16 +154,30 @@ module.exports = {
           //Assign role if not home nor visiting controller
           if (!homeController && !visitingController) {
             roles.push('ARTCC Guest')
+            guestController = true
           }
 
           //Determine Nickname
-          newNick = `${user.fname} ${user.lname}`
+          if (!zabStaff) {
+            newNick = `${user.fname} ${user.lname} | ${facStaff.join('/')}`
+          }
+          else if (!homeController) {
+            newNick = `${user.fname} ${user.lname}`
+          }
+          else if (facStaff.length > 0) {
+            newNick = `${user.fname} ${user.lname} | ${user.facility} ${facStaff.join('/')}`
+            i = roles.length
+          }
+          else {
+            newNick = `${user.fname} ${user.lname} | ${user.facility} ${user.rating_short}`
+          }
 
           //Assign Nickname
           if ((newNick !== member.nickname) && !member.permissions.has('ADMINISTRATOR')) {
             nickChange = true
             member.setNickname(newNick, 'Roles Synchronization').catch(e => console.error(e))
           }
+          
           //Assign Roles
           let roleStr = '',
             excluded = ['Server Booster', 'VATGOV']

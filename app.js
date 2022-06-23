@@ -1,6 +1,8 @@
 /**
  * VATUSA Discord Bot
  * @author Blake Nahin <b.nahin@vatusa.net>
+ * Repurposed for the ZAB Discord by
+ * Kyle Porter
  */
 
 //Initiate Environment Variables

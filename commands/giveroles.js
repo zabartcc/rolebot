@@ -174,6 +174,9 @@ module.exports = {
             member.setNickname(newNick, 'Roles Synchronization').catch(e => console.error(e))
           }
           
+          //Everyone gets the "I Agree" role
+          roles.push('I Agree')
+          
           //Assign Roles
           let roleStr = '',
             excluded = ['Server Booster', 'VATGOV']

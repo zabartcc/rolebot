@@ -56,7 +56,8 @@ module.exports = {
             newNick = member.nickname,
             nickChange = false,
             homeController = false,
-            visitingController = false
+            visitingController = false,
+            isInstructor = false
           const thisFacility = 'ZAB'
           /*
                       if (member.permissions.has('ADMINISTRATOR')) {
@@ -119,13 +120,13 @@ module.exports = {
                 break;
               case 'S3': roles.push('Senior Student')
                 break;
-              case 'C1': roles.push('Controller')
+              case 'I1': roles.push('Instructor'); roles.push('Training Team'); isInstructor = true
                 break;
-              case 'C3': roles.push('Senior Controller')
+              case 'I3': roles.push('Instructor'); roles.push('Training Team'); isInstructor = true
                 break;
-              case 'I1': roles.push('Instructor'); roles.push('Training Team')
+              case 'C1': if(!isInstructor) { roles.push('Controller') }
                 break;
-              case 'I3': roles.push('Instructor'); roles.push('Training Team')
+              case 'C3': if(!isInstructor) { roles.push('Senior Controller') }
                 break;
               case 'SUP': null
             }
@@ -148,24 +149,20 @@ module.exports = {
           }
 
           //Assign role if not home nor visiting controller
-          if (!homeController && !visitingController) {
+          if (!homeController || !visitingController) {
             roles.push('ARTCC Guest')
             guestController = true
           }
 
           //Determine Nickname
-          if (!zabStaff) {
-            newNick = `${user.fname} ${user.lname} | ${facStaff.join('/')}`
+          if (homeController) {
+            newNick = `${user.fname} ${user.lname} | ${user.rating_short}`
           }
-          else if (!homeController) {
-            newNick = `${user.fname} ${user.lname}`
-          }
-          else if (facStaff.length > 0) {
+          else if (visitingController || guestController) {
             newNick = `${user.fname} ${user.lname} | ${user.facility} ${facStaff.join('/')}`
-            i = roles.length
           }
           else {
-            newNick = `${user.fname} ${user.lname} | ${user.facility} ${user.rating_short}`
+            newNick = `${user.fname} ${user.lname}`
           }
 
           //Assign Nickname

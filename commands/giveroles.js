@@ -72,38 +72,65 @@ module.exports = {
             if ((thisFacility === role.facility) && (role.role === 'ATM')) {
               roles.push('Air Traffic Manager')
               zabStaff = true
+              facStaff.push('ATM')
             }
             if ((thisFacility === role.facility) && (role.role === 'DATM')) {
               roles.push('Deputy Air Traffic Manager')
               zabStaff = true
+              facStaff.push('DATM')
             }
             if ((thisFacility === role.facility) && (role.role === 'TA')) {
               roles.push('Training Administrator')
               roles.push('Training Team')
               zabStaff = true
+              facStaff.push('TA')
             }
             if ((thisFacility === role.facility) && (role.role === 'EC')) {
               roles.push('Events Coordinator')
               roles.push('Events Team')
               zabStaff = true
+              facStaff.push('EC')
             }
             if ((thisFacility === role.facility) && (role.role === 'FE')) {
               roles.push('Facility Engineer')
               roles.push('Facilities Team')
               roles.push('Tech Team')
               zabStaff = true
+              facStaff.push('FE')
             }
             if ((thisFacility === role.facility) && (role.role === 'WM')) {
               roles.push('Webmaster')
               roles.push('Web Team')
               roles.push('Tech Team')
               zabStaff = true
+              facStaff.push('WM')
             }
             if ((thisFacility === role.facility) && (role.role === 'MTR')) {
               roles.push('Training Team')
             }
             if ((role.facility === 'ZHQ') && role.role.match(/US\d+/)) {
               roles.push('VATUSA Staff')
+            }
+            if ((this.Facility != role.facility) && (role.role === 'ATM')) {
+              facStaff.push('ATM')
+            }
+            if ((this.Facility != role.facility) && (role.role === 'DATM')) {
+              facStaff.push('DATM')
+            }
+            if ((this.Facility != role.facility) && (role.role === 'TA')) {
+              facStaff.push('TA')
+            }
+            if ((this.Facility != role.facility) && (role.role === 'EC')) {
+              facStaff.push('EC')
+            }
+            if ((this.Facility != role.facility) && (role.role === 'FE')) {
+              facStaff.push('FE')
+            }
+            if ((this.Facility != role.facility) && (role.role === 'WM')) {
+              facStaff.push('WM')
+            }
+            if (role.role === 'ACE') {
+              roles.push('ACE Team')
             }
           }
 
@@ -149,17 +176,23 @@ module.exports = {
           }
 
           //Assign role if not home nor visiting controller
-          if (!homeController || !visitingController) {
+          if (!homeController && !visitingController) {
             roles.push('ARTCC Guest')
             guestController = true
           }
 
           //Determine Nickname
-          if (homeController) {
+          if (zabStaff) {
+            newNick = `${user.fname} ${user.lname} | ${facStaff.join('/')}`
+          }
+          else if (homeController) {
             newNick = `${user.fname} ${user.lname} | ${user.rating_short}`
           }
-          else if (visitingController || guestController) {
+          else if (facStaff.length > 0) {
             newNick = `${user.fname} ${user.lname} | ${user.facility} ${facStaff.join('/')}`
+          }
+          else if (visitingController || guestController) {
+            newNick = `${user.fname} ${user.lname} | ${user.facility} ${user.rating_short}`
           }
           else {
             newNick = `${user.fname} ${user.lname}`

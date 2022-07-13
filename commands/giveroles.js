@@ -135,7 +135,7 @@ module.exports = {
           }
 
           //Set roles based on rating for home controllers
-          if (user.facility === 'ZAB') {
+          if (user.facility === thisFacility) {
             homeController = true
             roles.push('Member')
             switch (user.rating_short) {
@@ -162,8 +162,8 @@ module.exports = {
           //Determine if visiting controller
           for (let i = 0; i < user.visiting_facilities.length; i++) {
             //Visiting Facilities Table
-            const visiting_facility = user.visiting_facilities[i]
-            if (visiting_facility === 'ZAB') {
+            const visiting_facility = user.visiting_facilities[i].facility
+            if (visiting_facility === thisFacility) {
               roles.push('Visitor')
               visitingController = true
             }

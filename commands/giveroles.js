@@ -156,6 +156,8 @@ module.exports = {
               case 'C3': if(!isInstructor) { roles.push('Senior Controller') }
                 break;
               case 'SUP': roles.push('Supervisor')
+                break;
+              case 'ADM': roles.push('Supervisor')
             }
           }
 

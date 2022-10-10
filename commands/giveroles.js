@@ -129,6 +129,9 @@ module.exports = {
             if ((this.Facility != role.facility) && (role.role === 'WM')) {
               facStaff.push('WM')
             }
+            if ((role.role === 'SUP') || (role.role === 'ADM)) {
+              roles.push('Supervisor')
+            }
             if (role.role === 'ACE') {
               roles.push('ACE Team')
             }
@@ -155,7 +158,9 @@ module.exports = {
                 break;
               case 'C3': if(!isInstructor) { roles.push('Senior Controller') }
                 break;
-              case 'SUP': null
+              case 'SUP': roles.push('Supervisor')
+                break;
+              case 'ADM': roles.push('Supervisor')
             }
           }
 

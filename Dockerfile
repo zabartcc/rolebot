@@ -7,6 +7,7 @@ RUN npm ci && npm i -g forever
 
 COPY . .
 
+RUN ls -la
 RUN node register-commands.js
 
 CMD ["forever", "start", "app.js"]

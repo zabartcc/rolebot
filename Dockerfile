@@ -7,4 +7,4 @@ RUN npm ci && npm i -g forever
 
 COPY . .
 
-CMD sh -c "node register-commands.js && forever start app.js"
+CMD sh -c "node register-commands.js && forever start app.js && while true; do sleep 30; done;"

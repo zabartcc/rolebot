@@ -30,18 +30,18 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ github.sha }}
             ghcr.io/${{ github.repository }}:main
 
-  # deploy:
-  #   name: Deploy to Kubernetes Cluster
-  #   needs: push-to-registry
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Install doctl
-  #       uses: digitalocean/action-doctl@v2
-  #       with:
-  #         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+  deploy:
+    name: Deploy to Kubernetes Cluster
+    needs: push-to-registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-  #     - name: Login to Cluster
-  #       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tcs
+      - name: Login to Cluster
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tcs
 
-  #     - name: Pull New Image and Restart
-  #       run: kubectl rollout restart deployment/role-bot -n zab-prod
+      - name: Pull New Image and Restart
+        run: kubectl rollout restart deployment/zab-discord-bot -n zab-prod

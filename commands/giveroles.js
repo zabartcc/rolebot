@@ -10,6 +10,8 @@ module.exports = {
       "Assign roles for channel access. Your Discord account must be linked on the VATUSA website."
     ),
   execute(interaction, id, res, g) {
+    console.log("Starting giveroles...");
+
     //Initialize Vars
     const { MessageEmbed } = require("discord.js"),
       axios = require("axios"),
@@ -288,6 +290,8 @@ module.exports = {
           // Send the embed to the same channel as the message
           interaction.reply({ embeds: [embed] });
         }
+
+        console.log("Finished giveroles...");
       })
       .catch((error) => {
         console.error(error);

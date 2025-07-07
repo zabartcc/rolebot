@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci && npm i -g forever
-RUN npm run build
 
 COPY . .
 

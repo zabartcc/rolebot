@@ -3,10 +3,11 @@ FROM node:22
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci && npm i -g forever
+RUN npm run build
 
 COPY . .
 
 RUN node register-commands.js
 
-CMD ["node", "app.js"]
+CMD ["forever", "start", "app.js"]
